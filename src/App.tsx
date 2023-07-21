@@ -1,18 +1,13 @@
-import React from "react";
-import { useState } from "react";
+import Message from "./components/Message";
 
 const App = () => {
-  const [person, setPerson] = useState({
-    firstName: "",
-    lastName: "",
-    contact: {
-      address: {
-        street: "",
-      },
-    },
-  });
-
-  return <div></div>;
+  return (
+    <div>
+      <Message />
+      <Message />
+      <Message />
+    </div>
+  );
 };
 
 export default App;
