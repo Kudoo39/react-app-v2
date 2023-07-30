@@ -8,7 +8,7 @@ const App = () => {
   return (
     <>
       <div>
-        <ExpandableText onClick={() => {}} maxChars={30}>{longContent}</ExpandableText>
+        <ExpandableText>{longContent}</ExpandableText>
       </div>
     </>
   );
