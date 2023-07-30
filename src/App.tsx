@@ -1,31 +1,21 @@
 import { useState } from "react";
-const App = () => {
-  const [cart, setCart] = useState({
-    discount: 1,
-    items: [
-      { id: 1, title: "Product 1", quantity: 1 },
-      { id: 2, title: "Product 2", quantity: 1 },
-    ],
-  });
 
-  const handleClick = () => {
-    setCart({
-      ...cart,
-      items: cart.items.map((item) =>
-        item.id === 1 ? { ...item, quantity: 2 } : item
-      ),
-    });
+const App = () => {
+  const longContent =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae metus id tellus rhoncus tempus. Donec quis orci a massa tristique auctor et a ex. Duis hendrerit odio nec tellus rhoncus, eu tempor arcu tristique. Vestibulum nec quam turpis. Sed vel mi sed nisl fermentum gravida. Nunc tincidunt lectus nec neque faucibus, ut pharetra eros cursus. Duis eu consequat justo, eget consectetur metus.";
+
+  const [content, setContent] = useState(false);
+  const showMore = () => {
+    setContent(!content);
   };
 
+  const display = content ? longContent : `${longContent.slice(0, 30)}...`;
+
   return (
-    <div>
-      {cart.items.map((item) => (
-        <div key={item.id}>
-          {item.title} - Quantity: {item.quantity}
-        </div>
-      ))}
-      <button onClick={handleClick}>Updating items</button>
-    </div>
+    <>
+      <p>{display}</p>
+      <button onClick={showMore}>More</button>
+    </>
   );
 };
 
