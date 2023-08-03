@@ -1,8 +1,8 @@
 import React from "react";
-import Form from "./components/Form";
+import ExpenseList from "./expense-tracker/ExpenseList";
 
 const App = () => {
-  return <Form />
+  return <ExpenseList />;
 };
 
 export default App;
