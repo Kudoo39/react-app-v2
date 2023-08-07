@@ -9,45 +9,60 @@ interface User {
 const App = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState("");
+  const [Loading, setLoading] = useState(false);
 
   //Promise => Res : Err
   useEffect(() => {
     const controller = new AbortController();
+
+    setLoading(true);
     axios
       .get<User[]>("https://jsonplaceholder.typicode.com/users", {
         signal: controller.signal,
       })
-      .then((response) => setUsers(response.data))
+      .then((response) => {
+        setUsers(response.data);
+        setLoading(false);
+      })
       .catch((err) => {
         if (err instanceof CanceledError) return;
         setError(err.message);
+        setLoading(false);
       });
 
     return () => controller.abort();
   }, []);
 
-  // Async / Await
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       const response = await axios.get<User[]>(
-  //         "https://jsonplaceholder.typicode.com/users"
-  //       );
-  //       setUsers(response.data);
-  //     } catch (err) {
-  //       setError((err as AxiosError).message);
-  //     }
-  //   };
+  const deleteUser = (user: User) => {
+    const originalUsers = [...users];
+    setUsers(users.filter((u) => u.id !== user.id));
 
-  //   fetchUsers();
-  // }, []);
+    axios
+      .delete("https://jsonplaceholder.typicode.com/users/" + user.id)
+      .catch((err) => {
+        setError(err.message);
+        setUsers(originalUsers);
+      });
+  };
 
   return (
     <>
       {error && <p className="text-danger">{error}</p>}
-      <ul>
+      {Loading && <div className="spinner-border"></div>}
+      <ul className="list-group">
         {users.map((user) => (
-          <li key={user.id}>{user.name}</li>
+          <li
+            key={user.id}
+            className="list-group-item d-flex justify-content-between"
+          >
+            {user.name}
+            <button
+              onClick={() => deleteUser(user)}
+              className="btn btn-outline-danger"
+            >
+              Delete
+            </button>
+          </li>
         ))}
       </ul>
     </>
